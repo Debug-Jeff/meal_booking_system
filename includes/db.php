@@ -8,12 +8,19 @@
 mysqli_report(MYSQLI_REPORT_OFF);
 
 $db_host = getenv('MYSQLHOST')     ?: 'localhost';
-$db_port = (int)(getenv('MYSQLPORT')     ?: 3307);
+$db_port = (int)(getenv('MYSQLPORT') ?: 3307);
 $db_user = getenv('MYSQLUSER')     ?: 'root';
 $db_pass = getenv('MYSQLPASSWORD') ?: '';
 $db_name = getenv('MYSQLDATABASE') ?: 'anu_meal_booking';
 
-$conn = new mysqli($db_host, $db_user, $db_pass, $db_name, $db_port);
+// Remote hosts (Aiven, etc.) require SSL — local dev connects normally
+if (getenv('MYSQLHOST')) {
+    $conn = mysqli_init();
+    mysqli_ssl_set($conn, null, null, null, null, null);
+    $conn->real_connect($db_host, $db_user, $db_pass, $db_name, $db_port, null, MYSQLI_CLIENT_SSL);
+} else {
+    $conn = new mysqli($db_host, $db_user, $db_pass, $db_name, $db_port);
+}
 
 if ($conn->connect_errno) {
     $err = $conn->connect_error;
