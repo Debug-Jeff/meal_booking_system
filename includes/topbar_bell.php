@@ -73,9 +73,18 @@ $bell_notifs = getRecentNotifications($conn, $bell_uid, 8);
 
 <script>
 (function () {
+  // Absolute URL built server-side — works from any subfolder (admin/, student/, etc.)
+  var API_URL = '<?php
+      $scheme = (!empty($_SERVER["HTTPS"]) && $_SERVER["HTTPS"] !== "off") ? "https" : "http";
+      $host   = $_SERVER["HTTP_HOST"] ?? "localhost";
+      // Determine root path: remove /admin/ or /student/ suffix
+      $root   = rtrim(dirname(dirname($_SERVER["SCRIPT_NAME"])), "/\\");
+      echo htmlspecialchars($scheme . "://" . $host . $root . "/api/notifications.php");
+  ?>';
+
   // ── Poll unread count every 30 seconds ───────────────────────────────────
   function refreshBellCount() {
-    fetch('../api/notifications.php?action=count', { credentials: 'same-origin' })
+    fetch(API_URL + '?action=count', { credentials: 'same-origin' })
       .then(function(r){ return r.json(); })
       .then(function(d){
         var badge = document.getElementById('bellBadge');
@@ -93,7 +102,7 @@ $bell_notifs = getRecentNotifications($conn, $bell_uid, 8);
 
   // ── Mark all read via AJAX ────────────────────────────────────────────────
   window.markAllReadAjax = function() {
-    fetch('../api/notifications.php', {
+    fetch(API_URL, {
       method: 'POST',
       credentials: 'same-origin',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
