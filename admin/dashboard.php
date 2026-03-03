@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/db.php';
 require_once '../includes/auth.php';
+require_once '../includes/notifications.php';
 requireAdmin();
 
 // Stats
@@ -71,6 +72,7 @@ $user = currentUser();
                 <h1><i class="bi bi-speedometer2 me-2"></i>Dashboard</h1>
             </div>
             <div class="d-flex align-items-center gap-2">
+                <?php include '../includes/topbar_bell.php'; ?>
                 <span class="badge rounded-pill text-bg-danger small"><?= date('D, d M Y') ?></span>
                 <span class="text-muted small d-none d-md-inline">
                     Welcome, <strong><?= htmlspecialchars($user['fullname']) ?></strong>

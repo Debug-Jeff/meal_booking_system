@@ -14,3 +14,7 @@ services:
         sync: false
       - key: MYSQLDATABASE
         sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: CRON_SECRET
+        sync: false

@@ -1,6 +1,8 @@
 <?php
 require_once '../includes/db.php';
 require_once '../includes/auth.php';
+require_once '../includes/notifications.php';
+require_once '../includes/mailer.php';
 requireAdmin();
 
 // Handle status update
@@ -10,9 +12,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if ($action === 'approve') {
         $conn->query("UPDATE bookings SET status='approved' WHERE id=$id");
         logAction($conn, 'Booking Approved', "Booking #$id approved.");
+
+        // Fetch booking details for notification
+        $bk = $conn->query("SELECT b.user_id, b.code, m.name meal_name, u.email, u.fullname FROM bookings b JOIN menus m ON b.menu_id=m.id JOIN users u ON b.user_id=u.id WHERE b.id=$id")->fetch_assoc();
+        if ($bk) {
+            $msg = "Your booking for {$bk['meal_name']} (#{$bk['code']}) has been approved ✅";
+            createNotification($conn, (int)$bk['user_id'], 'booking_approved', $msg, '../student/my_bookings.php');
+            if (getSetting($conn, 'meal_alerts', '1') === '1') {
+                sendEmail($bk['email'], $bk['fullname'], 'Booking Approved — ANU Meal System',
+                    buildEmailHtml('Booking Approved ✅', "<p>{$msg}</p><p>You can now collect your meal at the cafeteria.</p>"));
+            }
+        }
+
     } elseif ($action === 'reject') {
         $conn->query("UPDATE bookings SET status='rejected' WHERE id=$id");
         logAction($conn, 'Booking Rejected', "Booking #$id rejected.");
+
+        $bk = $conn->query("SELECT b.user_id, b.code, m.name meal_name, u.email, u.fullname FROM bookings b JOIN menus m ON b.menu_id=m.id JOIN users u ON b.user_id=u.id WHERE b.id=$id")->fetch_assoc();
+        if ($bk) {
+            $msg = "Your booking for {$bk['meal_name']} (#{$bk['code']}) was rejected ❌";
+            createNotification($conn, (int)$bk['user_id'], 'booking_rejected', $msg, '../student/my_bookings.php');
+            if (getSetting($conn, 'meal_alerts', '1') === '1') {
+                sendEmail($bk['email'], $bk['fullname'], 'Booking Rejected — ANU Meal System',
+                    buildEmailHtml('Booking Rejected ❌', "<p>{$msg}</p><p>Please contact the cafeteria if you have questions.</p>"));
+            }
+        }
+
     } elseif ($action === 'reset_all') {
         $conn->query("DELETE FROM bookings");
         logAction($conn, 'All Bookings Cleared', 'Admin cleared all bookings.');
@@ -58,12 +83,15 @@ $user = currentUser();
     <div class="main-content flex-grow-1">
         <div class="topbar d-flex justify-content-between align-items-center">
             <h1><i class="bi bi-calendar-check me-2"></i>Booking Management</h1>
-            <form method="POST" onsubmit="return confirm('Clear ALL bookings? This cannot be undone.');">
-                <input type="hidden" name="action" value="reset_all">
-                <button type="submit" class="btn btn-sm btn-outline-danger">
-                    <i class="bi bi-trash me-1"></i> Clear All
-                </button>
-            </form>
+            <div class="d-flex align-items-center gap-2">
+                <?php include '../includes/topbar_bell.php'; ?>
+                <form method="POST" onsubmit="return confirm('Clear ALL bookings? This cannot be undone.');">
+                    <input type="hidden" name="action" value="reset_all">
+                    <button type="submit" class="btn btn-sm btn-outline-danger">
+                        <i class="bi bi-trash me-1"></i> Clear All
+                    </button>
+                </form>
+            </div>
         </div>
 
         <div class="p-4 fade-in-up">

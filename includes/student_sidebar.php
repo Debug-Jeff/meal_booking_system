@@ -6,8 +6,15 @@ function isActiveS($page) {
 }
 $user = currentUser();
 ?>
+<!-- Sidebar overlay (mobile only) -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
 <div class="sidebar d-flex flex-column" id="sidebar">
-    <div class="sidebar-brand text-center py-3">
+    <div class="sidebar-brand text-center py-3 position-relative">
+        <!-- Close button – only visible on mobile -->
+        <button class="sidebar-close-btn d-md-none" id="sidebarClose" aria-label="Close menu">
+            <i class="bi bi-x-lg"></i>
+        </button>
         <img src="../public/images/anu-logo.png" alt="ANU Logo" class="sidebar-logo mb-2" onerror="this.style.display='none'">
         <div class="sidebar-title">ANU Student Portal</div>
     </div>
@@ -40,3 +47,19 @@ $user = currentUser();
         </a>
     </div>
 </div>
+
+<script>
+(function () {
+    var sidebar  = document.getElementById('sidebar');
+    var overlay  = document.getElementById('sidebarOverlay');
+    var closeBtn = document.getElementById('sidebarClose');
+    var openBtn  = document.getElementById('sidebarToggle'); // may be null on some pages
+
+    function openSidebar()  { sidebar.classList.add('show');  overlay.classList.add('show'); }
+    function closeSidebar() { sidebar.classList.remove('show'); overlay.classList.remove('show'); }
+
+    if (openBtn)  openBtn.addEventListener('click',  openSidebar);
+    if (closeBtn) closeBtn.addEventListener('click',  closeSidebar);
+    if (overlay)  overlay.addEventListener('click',   closeSidebar);
+})();
+</script>

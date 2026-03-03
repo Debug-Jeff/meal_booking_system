@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/db.php';
 require_once '../includes/auth.php';
+require_once '../includes/notifications.php';
 requireLogin();
 if ($_SESSION['role'] !== 'student') { header('Location: ../admin/dashboard.php'); exit; }
 
@@ -30,7 +31,7 @@ $bookings = $conn->query("
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Bookings | ANU Student</title>
+    <title>My Bookings | ANU</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
@@ -42,7 +43,11 @@ $bookings = $conn->query("
 
     <div class="main-content flex-grow-1">
         <div class="topbar d-flex justify-content-between align-items-center">
-            <h1><i class="bi bi-calendar-check me-2"></i>My Bookings</h1>
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-sm d-md-none" id="sidebarToggle"><i class="bi bi-list fs-5"></i></button>
+                <h1><i class="bi bi-calendar-check me-2"></i>My Bookings</h1>
+            </div>
+            <?php include '../includes/topbar_bell.php'; ?>
         </div>
 
         <div class="p-4 fade-in-up">

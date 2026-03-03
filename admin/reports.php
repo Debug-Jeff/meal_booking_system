@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/db.php';
 require_once '../includes/auth.php';
+require_once '../includes/notifications.php';
 requireAdmin();
 
 // Summary stats
@@ -91,8 +92,9 @@ $bookings  = $conn->query("
     <?php include '../includes/sidebar.php'; ?>
     <div class="main-content flex-grow-1">
         <div class="topbar d-flex justify-content-between align-items-center">
-            <h1><i class="bi bi-bar-chart-line me-2"></i>Reports & Analytics</h1>
-            <div class="d-flex gap-2">
+            <h1><i class="bi bi-bar-chart-line me-2"></i>Reports &amp; Analytics</h1>
+            <div class="d-flex gap-2 align-items-center">
+                <?php include '../includes/topbar_bell.php'; ?>
                 <a href="?export=csv&from=<?= $from_date ?>&to=<?= $to_date ?>" class="btn btn-sm" style="background:#fac823;font-weight:600;">
                     <i class="bi bi-file-earmark-spreadsheet me-1"></i>CSV
                 </a>

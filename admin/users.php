@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/db.php';
 require_once '../includes/auth.php';
+require_once '../includes/notifications.php';
 requireSuperAdmin();
 
 $msg = ''; $error = '';
@@ -77,9 +78,12 @@ $users  = $conn->query("SELECT * FROM users $where ORDER BY created_at DESC");
     <div class="main-content flex-grow-1">
         <div class="topbar d-flex justify-content-between align-items-center">
             <h1><i class="bi bi-people me-2"></i>User Management</h1>
-            <button class="btn btn-anu btn-sm" data-bs-toggle="modal" data-bs-target="#addModal">
-                <i class="bi bi-person-plus me-1"></i> Add User
-            </button>
+            <div class="d-flex align-items-center gap-2">
+                <?php include '../includes/topbar_bell.php'; ?>
+                <button class="btn btn-anu btn-sm" data-bs-toggle="modal" data-bs-target="#addModal">
+                    <i class="bi bi-person-plus me-1"></i> Add User
+                </button>
+            </div>
         </div>
         <div class="p-4 fade-in-up">
             <?php if ($msg):  ?><div class="alert alert-success alert-dismissible fade show"><i class="bi bi-check-circle me-1"></i><?= htmlspecialchars($msg) ?><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div><?php endif; ?>

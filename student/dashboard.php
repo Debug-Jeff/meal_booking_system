@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/db.php';
 require_once '../includes/auth.php';
+require_once '../includes/notifications.php';
 requireLogin();
 if ($_SESSION['role'] !== 'student') { header('Location: ../admin/dashboard.php'); exit; }
 
@@ -43,7 +44,10 @@ $user = currentUser();
                 <button class="btn btn-sm d-md-none" id="sidebarToggle"><i class="bi bi-list fs-5"></i></button>
                 <h1><i class="bi bi-house me-2"></i>My Dashboard</h1>
             </div>
-            <span class="badge rounded-pill text-bg-danger"><?= date('D, d M Y') ?></span>
+            <div class="d-flex align-items-center gap-2">
+                <?php include '../includes/topbar_bell.php'; ?>
+                <span class="badge rounded-pill text-bg-danger"><?= date('D, d M Y') ?></span>
+            </div>
         </div>
 
         <div class="p-4 fade-in-up">
@@ -133,10 +137,5 @@ $user = currentUser();
     </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-<script>
-document.getElementById('sidebarToggle')?.addEventListener('click', () => {
-    document.getElementById('sidebar').classList.toggle('show');
-});
-</script>
 </body>
 </html>

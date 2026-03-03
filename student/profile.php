@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/db.php';
 require_once '../includes/auth.php';
+require_once '../includes/notifications.php';
 requireLogin();
 if ($_SESSION['role'] !== 'student') { header('Location: ../admin/dashboard.php'); exit; }
 
@@ -52,7 +53,7 @@ $consumed_count = $conn->query("SELECT COUNT(*) c FROM bookings WHERE user_id=$u
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile | ANU Student</title>
+    <title>My Profile | ANU</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="../public/css/style.css">
@@ -61,7 +62,13 @@ $consumed_count = $conn->query("SELECT COUNT(*) c FROM bookings WHERE user_id=$u
 <div class="d-flex">
     <?php include '../includes/student_sidebar.php'; ?>
     <div class="main-content flex-grow-1">
-        <div class="topbar"><h1><i class="bi bi-person-circle me-2"></i>My Profile</h1></div>
+        <div class="topbar d-flex justify-content-between align-items-center">
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-sm d-md-none" id="sidebarToggle"><i class="bi bi-list fs-5"></i></button>
+                <h1><i class="bi bi-person-circle me-2"></i>My Profile</h1>
+            </div>
+            <?php include '../includes/topbar_bell.php'; ?>
+        </div>
         <div class="p-4 fade-in-up">
             <?php if ($msg):  ?><div class="alert alert-success alert-dismissible fade show"><i class="bi bi-check-circle me-1"></i><?= htmlspecialchars($msg) ?><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div><?php endif; ?>
             <?php if ($error): ?><div class="alert alert-danger alert-dismissible fade show"><i class="bi bi-x-circle me-1"></i><?= htmlspecialchars($error) ?><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div><?php endif; ?>

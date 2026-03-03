@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/db.php';
 require_once '../includes/auth.php';
+require_once '../includes/notifications.php';
 requireSuperAdmin();
 
 $msg = '';
@@ -54,8 +55,9 @@ $logs = $conn->query("
 <div class="d-flex">
     <?php include '../includes/sidebar.php'; ?>
     <div class="main-content flex-grow-1">
-        <div class="topbar">
+        <div class="topbar d-flex justify-content-between align-items-center">
             <h1><i class="bi bi-gear me-2"></i>System Settings</h1>
+            <?php include '../includes/topbar_bell.php'; ?>
         </div>
         <div class="p-4 fade-in-up">
             <?php if ($msg): ?><div class="alert alert-success alert-dismissible fade show"><i class="bi bi-check-circle me-1"></i><?= htmlspecialchars($msg) ?><button type="button" class="btn-close" data-bs-dismiss="alert"></button></div><?php endif; ?>

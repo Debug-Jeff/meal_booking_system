@@ -1,6 +1,7 @@
 <?php
 require_once '../includes/db.php';
 require_once '../includes/auth.php';
+require_once '../includes/notifications.php';
 requireAdmin();
 
 $msg = '';
@@ -67,9 +68,12 @@ $menus = $conn->query("SELECT * FROM menus $where ORDER BY date DESC, type ASC")
     <div class="main-content flex-grow-1">
         <div class="topbar d-flex justify-content-between align-items-center">
             <h1><i class="bi bi-journal-text me-2"></i>Menu Management</h1>
-            <button class="btn btn-anu btn-sm" data-bs-toggle="modal" data-bs-target="#addModal">
-                <i class="bi bi-plus-lg me-1"></i> Add Menu Item
-            </button>
+            <div class="d-flex align-items-center gap-2">
+                <?php include '../includes/topbar_bell.php'; ?>
+                <button class="btn btn-anu btn-sm" data-bs-toggle="modal" data-bs-target="#addModal">
+                    <i class="bi bi-plus-lg me-1"></i> Add Menu Item
+                </button>
+            </div>
         </div>
 
         <div class="p-4 fade-in-up">
