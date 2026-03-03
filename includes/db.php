@@ -17,7 +17,7 @@ $db_name = getenv('MYSQLDATABASE') ?: 'anu_meal_booking';
 if (getenv('MYSQLHOST')) {
     $conn = mysqli_init();
     mysqli_ssl_set($conn, null, null, null, null, null);
-    $conn->real_connect($db_host, $db_user, $db_pass, $db_name, $db_port, null, MYSQLI_CLIENT_SSL);
+    $conn->real_connect($db_host, $db_user, $db_pass, $db_name, $db_port, null, MYSQLI_CLIENT_SSL | MYSQLI_CLIENT_SSL_DONT_VERIFY_SERVER_CERT); //
 } else {
     $conn = new mysqli($db_host, $db_user, $db_pass, $db_name, $db_port);
 }
