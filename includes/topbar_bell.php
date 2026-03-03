@@ -102,28 +102,28 @@ $bell_notifs = getRecentNotifications($conn, $bell_uid, 8);
 
   // ── Mark all read via AJAX ────────────────────────────────────────────────
   window.markAllReadAjax = function() {
+    // Instantly clear badge + unread styles (don't wait for AJAX)
+    var badge = document.getElementById('bellBadge');
+    if (badge) { badge.textContent = ''; badge.classList.add('d-none'); }
+    document.querySelectorAll('.notif-item.bg-light').forEach(function(el){
+      el.classList.remove('bg-light');
+    });
+    document.querySelectorAll('.notif-item .bg-primary.rounded-circle').forEach(function(el){
+      el.remove();
+    });
+    // Fire mark-read to DB in background
     fetch(API_URL, {
       method: 'POST',
       credentials: 'same-origin',
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: 'action=mark_read'
-    }).then(function() {
-      // Clear badge
-      var badge = document.getElementById('bellBadge');
-      if (badge) { badge.textContent = ''; badge.classList.add('d-none'); }
-      // Remove unread styling from items
-      document.querySelectorAll('.notif-item.bg-light').forEach(function(el){
-        el.classList.remove('bg-light');
-      });
-      document.querySelectorAll('.notif-item .bg-primary.rounded-circle').forEach(function(el){
-        el.remove();
-      });
     }).catch(function(){});
   };
 
   // ── Also mark read when bell is opened ───────────────────────────────────
   window.markBellRead = function() {
-    setTimeout(window.markAllReadAjax, 400);
+    // Immediately hide badge, then confirm with server
+    markAllReadAjax();
   };
 })();
 </script>

@@ -67,7 +67,10 @@ $bookings = $conn->query("
 
     <div class="main-content flex-grow-1">
         <div class="topbar d-flex justify-content-between align-items-center">
-            <h1><i class="bi bi-patch-check me-2"></i>Meal Validation</h1>
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-sm d-md-none" id="sidebarToggle"><i class="bi bi-list fs-5"></i></button>
+                <h1><i class="bi bi-patch-check me-2"></i>Meal Validation</h1>
+            </div>
             <?php include '../includes/topbar_bell.php'; ?>
         </div>
 

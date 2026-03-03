@@ -92,7 +92,10 @@ $bookings  = $conn->query("
     <?php include '../includes/sidebar.php'; ?>
     <div class="main-content flex-grow-1">
         <div class="topbar d-flex justify-content-between align-items-center">
-            <h1><i class="bi bi-bar-chart-line me-2"></i>Reports &amp; Analytics</h1>
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-sm d-md-none" id="sidebarToggle"><i class="bi bi-list fs-5"></i></button>
+                <h1><i class="bi bi-bar-chart-line me-2"></i>Reports &amp; Analytics</h1>
+            </div>
             <div class="d-flex gap-2 align-items-center">
                 <?php include '../includes/topbar_bell.php'; ?>
                 <a href="?export=csv&from=<?= $from_date ?>&to=<?= $to_date ?>" class="btn btn-sm" style="background:#fac823;font-weight:600;">

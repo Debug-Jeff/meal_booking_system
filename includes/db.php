@@ -53,3 +53,7 @@ if ($conn->connect_errno) {
 }
 
 $conn->set_charset('utf8mb4');
+
+// Set timezone to Africa/Nairobi (EAT = UTC+3) so all date() calls display correctly.
+// This matches the system clock and TiDB's local offset.
+date_default_timezone_set('Africa/Nairobi');

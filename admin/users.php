@@ -77,7 +77,10 @@ $users  = $conn->query("SELECT * FROM users $where ORDER BY created_at DESC");
     <?php include '../includes/sidebar.php'; ?>
     <div class="main-content flex-grow-1">
         <div class="topbar d-flex justify-content-between align-items-center">
-            <h1><i class="bi bi-people me-2"></i>User Management</h1>
+            <div class="d-flex align-items-center gap-2">
+                <button class="btn btn-sm d-md-none" id="sidebarToggle"><i class="bi bi-list fs-5"></i></button>
+                <h1><i class="bi bi-people me-2"></i>User Management</h1>
+            </div>
             <div class="d-flex align-items-center gap-2">
                 <?php include '../includes/topbar_bell.php'; ?>
                 <button class="btn btn-anu btn-sm" data-bs-toggle="modal" data-bs-target="#addModal">
