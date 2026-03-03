@@ -8,13 +8,31 @@ require_once '../includes/mailer.php';
 header('Content-Type: application/json');
 
 // ── Authenticate via CRON_SECRET ──────────────────────────────────────────
-$secret      = getenv('CRON_SECRET') ?: '';
-$authHeader  = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
-$provided    = str_replace('Bearer ', '', $authHeader);
+$secret = getenv('CRON_SECRET') ?: '';
+
+// Method 1: Authorization: Bearer <secret> header
+// (use getallheaders() — more reliable behind Docker/Render proxies)
+$provided = '';
+if (function_exists('getallheaders')) {
+    $headers = getallheaders();
+    // Headers are case-insensitive; normalise to lowercase keys
+    $headers = array_change_key_case($headers, CASE_LOWER);
+    $authHeader = $headers['authorization'] ?? '';
+    $provided = str_replace('Bearer ', '', $authHeader);
+}
+// Fallback: also accept via $_SERVER (some setups pass it here)
+if ($provided === '') {
+    $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+    $provided = str_replace('Bearer ', '', $authHeader);
+}
+// Method 2: ?secret=<secret> query param (convenient for testing)
+if ($provided === '' && isset($_GET['secret'])) {
+    $provided = $_GET['secret'];
+}
 
 if (!$secret || !hash_equals($secret, trim($provided))) {
     http_response_code(403);
-    echo json_encode(['error' => 'Forbidden']);
+    echo json_encode(['error' => 'Forbidden', 'hint' => 'Check CRON_SECRET env var on Render and Authorization header value in cron-job.org']);
     exit;
 }
 
