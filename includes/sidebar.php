@@ -62,7 +62,7 @@ $user = currentUser();
 </div>
 
 <script>
-(function () {
+document.addEventListener('DOMContentLoaded', function () {
     var sidebar  = document.getElementById('sidebar');
     var overlay  = document.getElementById('sidebarOverlay');
     var closeBtn = document.getElementById('sidebarClose');
@@ -74,5 +74,5 @@ $user = currentUser();
     if (openBtn)  openBtn.addEventListener('click',  openSidebar);
     if (closeBtn) closeBtn.addEventListener('click',  closeSidebar);
     if (overlay)  overlay.addEventListener('click',   closeSidebar);
-})();
+});
 </script>

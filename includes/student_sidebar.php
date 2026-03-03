@@ -49,17 +49,17 @@ $user = currentUser();
 </div>
 
 <script>
-(function () {
+document.addEventListener('DOMContentLoaded', function () {
     var sidebar  = document.getElementById('sidebar');
     var overlay  = document.getElementById('sidebarOverlay');
     var closeBtn = document.getElementById('sidebarClose');
-    var openBtn  = document.getElementById('sidebarToggle'); // may be null on some pages
+    var openBtn  = document.getElementById('sidebarToggle');
 
-    function openSidebar()  { sidebar.classList.add('show');  overlay.classList.add('show'); }
+    function openSidebar()  { sidebar.classList.add('show');    overlay.classList.add('show'); }
     function closeSidebar() { sidebar.classList.remove('show'); overlay.classList.remove('show'); }
 
     if (openBtn)  openBtn.addEventListener('click',  openSidebar);
     if (closeBtn) closeBtn.addEventListener('click',  closeSidebar);
     if (overlay)  overlay.addEventListener('click',   closeSidebar);
-})();
+});
 </script>

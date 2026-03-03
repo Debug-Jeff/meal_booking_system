@@ -54,6 +54,8 @@ if ($conn->connect_errno) {
 
 $conn->set_charset('utf8mb4');
 
-// Set timezone to Africa/Nairobi (EAT = UTC+3) so all date() calls display correctly.
-// This matches the system clock and TiDB's local offset.
+// Tell MySQL to return TIMESTAMP columns in EAT (UTC+3)
+$conn->query("SET time_zone = '+03:00'");
+
+// Keep PHP's clock in sync with the DB timezone.
 date_default_timezone_set('Africa/Nairobi');
