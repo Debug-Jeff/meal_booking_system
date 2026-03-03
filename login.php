@@ -109,9 +109,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <label class="form-check-label small" for="remember">Remember me</label>
                         </div>
                     </div>
-                    <div class="register">
-                        <p><small>Don't have an account? <a href="register.php" class="text-decoration-none">Register here</a></small></p>
-                    </div>
+                    <p class="text-center text-muted small mb-3">
+                        No account? Contact your administrator.
+                    </p>
                     <button type="submit" class="btn btn-anu w-100 py-2">
                         <i class="bi bi-box-arrow-in-right me-2"></i> Sign In
                     </button>

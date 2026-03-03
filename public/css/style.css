@@ -280,7 +280,7 @@ body {
 /* ===== LOGIN PAGE ===== */
 .login-bg {
     min-height: 100vh;
-    background: #000;
+    background: #111;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -292,8 +292,8 @@ body {
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.7)),
-                url('public/images/HELSTROM.jpg') no-repeat center/cover;
+    background: linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.65)),
+                url('../images/ANU-Home.jpeg') no-repeat center center / cover;
     animation: zoomFade 20s ease-in-out infinite alternate;
 }
 
